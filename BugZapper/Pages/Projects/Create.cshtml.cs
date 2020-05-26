@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BugZapper.Data;
+using BugZapper.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using BugZapper.Data;
-using BugZapper.Models;
+using System.Threading.Tasks;
 
 namespace BugZapper.Pages.Projects
 {
@@ -32,9 +28,7 @@ namespace BugZapper.Pages.Projects
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
             _context.ProjectModel.Add(ProjectModel);
             await _context.SaveChangesAsync();

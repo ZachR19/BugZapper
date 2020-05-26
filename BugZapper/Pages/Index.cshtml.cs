@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -12,14 +10,30 @@ namespace BugZapper.Pages
     {
         private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly UserManager<AppUser> _userMan;
+
+        private readonly SignInManager<AppUser> _signinMan;
+
+        public IndexModel(ILogger<IndexModel> logger, 
+                          UserManager<AppUser> userMan, 
+                          SignInManager<AppUser> signinMan)
         {
             _logger = logger;
+            _userMan = userMan;
+            _signinMan = signinMan;
         }
+
+        [BindProperty(SupportsGet = true)]
+        public string Username { get; set; }
+
 
         public void OnGet()
         {
-
+            if (string.IsNullOrEmpty(Username))
+                Username = string.Empty;
+            else
+                Username = $", {Username}";
         }
+
     }
 }

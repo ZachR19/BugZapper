@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using BugZapper.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BugZapper.Data
 {
-    public class BugZapperContext : DbContext
+    public class BugZapperContext : IdentityDbContext<AppUser>
     {
         public BugZapperContext (DbContextOptions<BugZapperContext> options)
             : base(options)
         {
         }
 
-        public DbSet<BugZapper.Models.ProjectModel> ProjectModel { get; set; }
+        public DbSet<ProjectModel> ProjectModel { get; set; }
     }
 }
