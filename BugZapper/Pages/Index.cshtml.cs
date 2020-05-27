@@ -26,13 +26,15 @@ namespace BugZapper.Pages
         [BindProperty(SupportsGet = true)]
         public string Username { get; set; }
 
-
         public void OnGet()
-        {
-            if (string.IsNullOrEmpty(Username))
-                Username = string.Empty;
+        { 
+            //Display username in index page title
+            var claim = HttpContext.User;
+
+            if (claim != null)
+                Username = claim.Identity.Name;
             else
-                Username = $", {Username}";
+                Username = string.Empty;
         }
 
     }

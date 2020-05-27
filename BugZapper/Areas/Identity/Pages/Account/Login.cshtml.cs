@@ -79,8 +79,6 @@ namespace BugZapper.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     return RedirectToPage("/Index", new {Username = Input.Username});
-
-                    //return LocalRedirect(returnUrl);
                 }
 
                 if (result.RequiresTwoFactor)
