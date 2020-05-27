@@ -1,10 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> _signinMan
+@inject UserManager<AppUser> _userMan
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BugZapper</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-lux.css" />
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -28,8 +34,25 @@
                     </li>
                 </ul>
 
-                <a class="btn" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
-                <a class="btn btn-outline-warning" asp-area="Identity" asp-page="/Account/Register">Sign Up</a>
+                @if (_signinMan.IsSignedIn(User))
+                {
+                    <!-- Display user options -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @_userMan.GetUserName(User)
+                        </button>
+                        <div class="dropdown-menu">
+                            <form method="post" asp-area="Identity" asp-page="/Account/Logout">
+                                <button class="btn dropdown-item" type="submit">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a class="btn" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+                    <a class="btn btn-outline-warning" asp-area="Identity" asp-page="/Account/Register">Sign Up</a>
+                }
             </div>
         </nav>
     </header>

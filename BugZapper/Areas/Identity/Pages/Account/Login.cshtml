@@ -5,6 +5,8 @@
     ViewData["Title"] = "Log in";
 }
 
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 <h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
@@ -53,6 +55,7 @@
             </form>
         </section>
     </div>
+
     <div class="col-md-6 col-md-offset-2">
         <section>
             <h4>Use another service to log in.</h4>
@@ -74,7 +77,33 @@
                             <p>
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    if (provider.Name == "Google")
+                                    {
+                                        <div class="col-md-4 ext-login-cont">
+                                            <button type = "submit" 
+                                                    class="btn-google btn-social-login" 
+                                                    value="@provider.Name" 
+                                                    title="Log in with Google" 
+                                                    name="provider"
+                                                    >
+
+                                                <i class="fab fa-google fa-align-left social-icon" style="margin-right: 10px;"></i>Google
+                                            </button>
+                                        </div>
+                                    }
+                                    else if (provider.Name == "Facebook")
+                                    {
+                                        <div class="col-md-4 ext-login-cont">
+                                            <button class="btn-facebook btn-social-login" 
+                                                    type="submit" 
+                                                    value="@provider.Name" 
+                                                    title="Log in with Facebook" 
+                                                    name="provider">
+
+                                                <i class="fab fa-facebook fa-align-left social-icon" style="margin-right: 10px;"></i>Facebook
+                                            </button>
+                                        </div>
+                                    }
                                 }
                             </p>
                         </div>

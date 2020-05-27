@@ -27,14 +27,16 @@ namespace BugZapper.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+
+            foreach (var cookieKey in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookieKey);
+            }
+
             if (returnUrl != null)
-            {
                 return LocalRedirect(returnUrl);
-            }
             else
-            {
                 return RedirectToPage();
-            }
         }
     }
 }

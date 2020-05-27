@@ -43,6 +43,35 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+/* Login page */
+.ext-login-cont {
+    margin-bottom: 10px;
+}
+
+.btn-social-login {
+    display: inline-block;
+    font-size: 18px;
+    padding: 10px;
+    text-align: center;
+    border: 0px solid transparent;
+}
+
+.btn-facebook {
+
+}
+
+.btn-facebook:hover {
+    background: #2b4db1;
+}
+
+.btn-google {
+    background: #d24228;
+}
+
+.btn-google:hover {
+    background: #b22222;
+}
+
 *,
 *::before,
 *::after {

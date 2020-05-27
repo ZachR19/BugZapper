@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.Extensions.Options;
 
 namespace BugZapper
 {
@@ -52,12 +53,7 @@ namespace BugZapper
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
             });
 
-            //Allow Facebook logins
-            services.AddAuthentication().AddFacebook(fbOptions =>
-            {
-                fbOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                fbOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+            ConfigureExternalLoginServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +100,23 @@ namespace BugZapper
             services.AddDbContext<BugZapperContext>(options =>
                 options.UseSqlServer(ConnString));
 
+        }
+
+        private void ConfigureExternalLoginServices(IServiceCollection services)
+        {
+            //Allow Facebook logins
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = Configuration["Authentication:Facebook:AppId"];
+                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+
+            //Allow Google logins
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
         }
     }
 }
