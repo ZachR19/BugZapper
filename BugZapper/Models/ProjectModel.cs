@@ -13,14 +13,14 @@ namespace BugZapper.Models
 
         public string Description { get; set; }
         
-        [DisplayName("Display Name")]
+        [DisplayName("Create Date")]
         [DataType(DataType.Date)]
         public DateTime CreatedDate { get; set; }
 
         [DisplayName("Last Edit Name")]
         [DataType(DataType.Date)]
         public DateTime LastEditDate { get; set; }
-
+         
         [DisplayName("Created By")]
         public string CreatedBy { get; set; }
     }

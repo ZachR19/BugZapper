@@ -12,5 +12,7 @@ namespace BugZapper.Data
         }
 
         public DbSet<ProjectModel> ProjectModel { get; set; }
+
+        public DbSet<BugZapper.Models.TeamModel> TeamModel { get; set; }
     }
 }

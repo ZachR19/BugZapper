@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace BugZapper
@@ -21,11 +22,26 @@ namespace BugZapper
             host.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            var builder = Host.CreateDefaultBuilder(args);
+
+            //builder.ConfigureAppConfiguration(builder =>
+            //{
+            //    var root = builder.Build();
+            //    var vaultName = root["KeyVault:Vault"];
+
+            //    builder.AddAzureKeyVault($"https://{vaultName}.vault.azure.net/",
+            //        root["KeyVault:ClientID"],
+            //        root["KeyVault:Secret"]);
+            //});
+
+            builder.ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
+
+            return builder;
+        }
     }
 }

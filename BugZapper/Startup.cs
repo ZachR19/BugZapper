@@ -7,15 +7,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using Microsoft.Extensions.Options;
+using Azure.Core;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 
 namespace BugZapper
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -33,8 +38,9 @@ namespace BugZapper
                 //Creates unique keys for authentication purposes
                 .AddDefaultTokenProviders();
 
-            CreateDBConnection(services);
-
+            services.AddDbContext<BugZapperContext>(options =>
+                options.UseSqlServer(GetConfigValue("DB")));
+            
             //Alter password policy
             services.Configure<IdentityOptions>(options =>
             {
@@ -57,12 +63,12 @@ namespace BugZapper
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             //Setup Identity
             app.UseAuthentication();
 
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
             else
             {
@@ -84,22 +90,25 @@ namespace BugZapper
             });
         }
 
-        /// <summary>
-        /// Builds the connection string and initiates connection to the database
-        /// </summary>
-        /// <param name="services"></param>
-        private void CreateDBConnection(IServiceCollection services)
+        private string GetConfigValue(string Key)
         {
-            var ConnString = Configuration.GetConnectionString("BugZapperContext");
+            //Get config data from Azure
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry =
+                {
+                    Delay= TimeSpan.FromSeconds(1),
+                    MaxDelay = TimeSpan.FromSeconds(15),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                }
+            };
 
-            ConnString = ConnString.Replace("Server=", $"Server={Configuration["Value1"]}");
-            ConnString = ConnString.Replace("Initial Catalog=", $"Initial Catalog={Configuration["Value2"]}");
-            ConnString = ConnString.Replace("User ID=", $"User ID={Configuration["Value3"]}");
-            ConnString = ConnString.Replace("Password=", $"Password={Configuration["Value4"]}");
+            var client = new SecretClient(new Uri("https://bugzapperkeyvault.vault.azure.net/"), new DefaultAzureCredential(), options);
 
-            services.AddDbContext<BugZapperContext>(options =>
-                options.UseSqlServer(ConnString));
+            KeyVaultSecret secret = client.GetSecret(Key);
 
+            return secret.Value;
         }
 
         private void ConfigureExternalLoginServices(IServiceCollection services)
@@ -107,15 +116,15 @@ namespace BugZapper
             //Allow Facebook logins
             services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = Configuration["Authentication:Facebook:AppId"];
-                options.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                options.AppId = GetConfigValue("FacebookAppId");
+                options.AppSecret = GetConfigValue("FacebookAppSecret");
             });
 
             //Allow Google logins
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = Configuration["Authentication:Google:ClientId"];
-                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                options.ClientId = GetConfigValue("GoogleClientId");
+                options.ClientSecret = GetConfigValue("GoogleClientSecret");
             });
         }
     }
