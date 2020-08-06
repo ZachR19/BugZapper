@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model string
+
+@inject SignInManager<AppUser> SignInMan
+
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item @(@Model == "home" ? "active" : string.Empty)">
+        <a class="nav-link" id="HomeLink" runat="server" asp-page="/Index">Home<span class="sr-only">(current)</span></a>
+    </li>
+    
+    @if (SignInMan.IsSignedIn(User))
+    {
+        <li class="nav-item @(@Model == "projects" ? "active" : string.Empty)">
+            <a class="nav-link" id="ProjectsLink" runat="server" asp-page="/Projects/Index">Projects</a>
+        </li>
+        <li class="nav-item @(@Model == "teams" ? "active" : string.Empty)">
+            <a class="nav-link" id="TeamsLink" runat="server" asp-page="/Teams/Index">Teams</a>
+        </li>
+    }
+</ul>
