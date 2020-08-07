@@ -33,6 +33,9 @@
                             @_userMan.GetUserName(User)
                         </button>
                         <div class="dropdown-menu">
+                            <form method="get" asp-page="/User/MyProfile">
+                                <button class="btn dropdown-item" type="submit">My Profile</button>
+                            </form>
                             <form method="post" asp-area="Identity" asp-page="/Account/Logout">
                                 <button class="btn dropdown-item" type="submit">Logout</button>
                             </form>

@@ -10,6 +10,7 @@ using System;
 using Azure.Core;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using BugZapper.Services;
 
 namespace BugZapper
 {
@@ -39,7 +40,7 @@ namespace BugZapper
                 .AddDefaultTokenProviders();
 
             services.AddDbContext<BugZapperContext>(options =>
-                options.UseSqlServer(GetConfigValue("DB")));
+                options.UseSqlServer(AzureKeyVaultService.GetVaultValue("DB")));
             
             //Alter password policy
             services.Configure<IdentityOptions>(options =>
@@ -90,41 +91,20 @@ namespace BugZapper
             });
         }
 
-        private string GetConfigValue(string Key)
-        {
-            //Get config data from Azure
-            SecretClientOptions options = new SecretClientOptions()
-            {
-                Retry =
-                {
-                    Delay= TimeSpan.FromSeconds(1),
-                    MaxDelay = TimeSpan.FromSeconds(15),
-                    MaxRetries = 5,
-                    Mode = RetryMode.Exponential
-                }
-            };
-
-            var client = new SecretClient(new Uri("https://bugzapperkeyvault.vault.azure.net/"), new DefaultAzureCredential(), options);
-
-            KeyVaultSecret secret = client.GetSecret(Key);
-
-            return secret.Value;
-        }
-
         private void ConfigureExternalLoginServices(IServiceCollection services)
         {
             //Allow Facebook logins
             services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = GetConfigValue("FacebookAppId");
-                options.AppSecret = GetConfigValue("FacebookAppSecret");
+                options.AppId = AzureKeyVaultService.GetVaultValue("FacebookAppId");
+                options.AppSecret = AzureKeyVaultService.GetVaultValue("FacebookAppSecret");
             });
 
             //Allow Google logins
             services.AddAuthentication().AddGoogle(options =>
             {
-                options.ClientId = GetConfigValue("GoogleClientId");
-                options.ClientSecret = GetConfigValue("GoogleClientSecret");
+                options.ClientId = AzureKeyVaultService.GetVaultValue("GoogleClientId");
+                options.ClientSecret = AzureKeyVaultService.GetVaultValue("GoogleClientSecret");
             });
         }
     }

@@ -1,0 +1,66 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@model BugZapper.Pages.User.MyProfileModel
+@{
+    ViewData["Title"] = @Model.User.Identity.Name;
+}
+
+@inject SignInManager<AppUser> SignInMan
+
+@if (SignInMan.IsSignedIn(User))
+{
+    <div class="col-lg-8 card">
+        <h1>@Model.LoggedInUser.UserName</h1>
+
+        <form method="post">
+
+            <div class="form-group">
+                <label asp-for="LoggedInUser.FirstName"></label>
+                <input asp-for="LoggedInUser.FirstName" class="form-control" name="FirstName"/>
+                <span asp-validation-for="LoggedInUser.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoggedInUser.LastName"></label>
+                <input asp-for="LoggedInUser.LastName" class="form-control" name="LastName"/>
+                <span asp-validation-for="LoggedInUser.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoggedInUser.Bio"></label>
+                <input asp-for="LoggedInUser.Bio" class="form-control" name="Bio"/>
+                <span asp-validation-for="LoggedInUser.Bio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoggedInUser.Company"></label>
+                <input asp-for="LoggedInUser.Company" class="form-control" name="Company"/>
+                <span asp-validation-for="LoggedInUser.Company" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoggedInUser.Role"></label>
+                <input asp-for="LoggedInUser.Role" class="form-control" name="Role"/>
+                <span asp-validation-for="LoggedInUser.Role" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoggedInUser.Location"></label>
+                <input asp-for="LoggedInUser.Location" class="form-control" name="Location"/>
+                <span asp-validation-for="LoggedInUser.Location" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LoggedInUser.Website"></label>
+                <input asp-for="LoggedInUser.Website" class="form-control" name="Website"/>
+                <span asp-validation-for="LoggedInUser.Website" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+}
+else
+{
+    <h1>Please log in to view your profile!</h1>
+}
