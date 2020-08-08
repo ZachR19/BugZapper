@@ -1,0 +1,64 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@model BugZapper.Pages.User.ProfileModel
+@{
+    ViewData["Title"] = "UserProfile";
+}
+
+@if (Model.ID != null)
+{
+    <div class="row">
+        <div class="col-md-4 card">
+            <img src="~/images/@Model.FoundUser.IconName" width="50" height="50" />
+
+            <h1 style="margin-top: 20px">@Model.FoundUser.UserName</h1>
+            <h4>@(Model.FoundUser.FirstName + " " + @Model.FoundUser.LastName)</h4>
+            <br/>
+
+            <div>
+                <h5><b>Bio</b></h5>
+                <p>@Model.FoundUser.Bio</p>
+            </div>
+            
+            <div>
+                <h5><b>Company</b></h5>
+                <p>@Model.FoundUser.Company</p>
+            </div>
+            
+            <div>
+                <h5><b>Role</b></h5>
+                <p>@Model.FoundUser.Role</p>
+            </div>
+
+            <div>
+                <h5><b>Location</b></h5>
+                <p>@Model.FoundUser.Location</p>
+            </div>
+            
+            <div>
+                <h5><b>Website</b></h5>
+                <p>@Model.FoundUser.Website</p>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4 card">
+                    <h1 style="margin-top: 20px">Your Teams</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 card">
+                    <h1 style="margin-top: 20px">Your Projects</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1>User could not be found</h1>
+    <h3>This user may have their profile set to private or their account cannot be found</h3>
+}
+

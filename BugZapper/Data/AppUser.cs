@@ -12,6 +12,6 @@ namespace BugZapper
         public string Role { get; set; }
         public string Location { get; set; }
         public string Website { get; set; }
-
+        public string IconName { get; set; }
     }
 }

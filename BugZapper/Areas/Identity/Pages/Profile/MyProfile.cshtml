@@ -1,0 +1,134 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using System.IO
+@model BugZapper.Pages.User.MyProfileModel
+@{
+    ViewData["Title"] = @Model.User.Identity.Name;
+}
+
+@inject SignInManager<AppUser> SignInMan
+@* TODO: Show teams and projects for the user, along with previous activity *@
+
+@if (SignInMan.IsSignedIn(User))
+{
+    @* Show Success *@
+    @if (Model.ShowUpdateSuccess)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Profile information updated successfully!
+        </div>
+    }
+
+    @if (Model.ShowUpdateFailure)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Profile information could not be updated, please try again.
+        </div>
+    }
+
+    @* Button that triggers the icon picker*@
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#icon-picker-modal" style="margin:10px">
+        View all icons
+    </button>
+
+    <div class="modal" id="icon-picker-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Pick an icon!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+                    <br/>
+
+                    @foreach (string icon in Directory.GetFiles(System.IO.Path.Combine(Model._env.WebRootPath, "images")))
+                    {
+                        var relative = System.IO.Path.GetRelativePath(Model._env.WebRootPath, icon);
+                        <img src="~/@relative" width="80" height="80"/>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 card">
+            <img src="~/images/@Model.LoggedInUser.IconName" width="50" height="50" />
+
+            <h1 style="margin-top: 20px">@Model.LoggedInUser.UserName</h1>
+
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="LoggedInUser.FirstName"></label>
+                    <input asp-for="LoggedInUser.FirstName" class="form-control" name="FirstName" />
+                    <span asp-validation-for="LoggedInUser.FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LoggedInUser.LastName"></label>
+                    <input asp-for="LoggedInUser.LastName" class="form-control" name="LastName" />
+                    <span asp-validation-for="LoggedInUser.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LoggedInUser.Bio"></label>
+                    <input asp-for="LoggedInUser.Bio" class="form-control" name="Bio" />
+                    <span asp-validation-for="LoggedInUser.Bio" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LoggedInUser.Company"></label>
+                    <input asp-for="LoggedInUser.Company" class="form-control" name="Company" />
+                    <span asp-validation-for="LoggedInUser.Company" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LoggedInUser.Role"></label>
+                    <input asp-for="LoggedInUser.Role" class="form-control" name="Role" />
+                    <span asp-validation-for="LoggedInUser.Role" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LoggedInUser.Location"></label>
+                    <input asp-for="LoggedInUser.Location" class="form-control" name="Location" />
+                    <span asp-validation-for="LoggedInUser.Location" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LoggedInUser.Website"></label>
+                    <input asp-for="LoggedInUser.Website" class="form-control" name="Website" />
+                    <span asp-validation-for="LoggedInUser.Website" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4 card">
+                    <h1 style="margin-top: 20px">Your Teams</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 card">
+                    <h1 style="margin-top: 20px">Your Projects</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1>Please log in to view your profile!</h1>
+}
