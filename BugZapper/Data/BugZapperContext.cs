@@ -15,12 +15,14 @@ namespace BugZapper.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            //builder.ApplyConfiguration(new ProjectConfiguration());
         }
 
         public DbSet<ProjectModel> ProjectModel { get; set; }
 
         public DbSet<TeamModel> TeamModel { get; set; }
+
+        public DbSet<TeamPermission> TeamPermission { get; set; }
+
+        public DbSet<ProjectPermission> ProjectPermission { get; set; }
     }
 }

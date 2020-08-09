@@ -1,19 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Threading.Tasks;
-
-namespace BugZapper.Models
+﻿namespace BugZapper.Models
 {
-    public class Permission
+    public class TeamPermission
     {
-        public string PermKey { get; set; }
+        public int ID { get; set; }
 
-        public TeamModel Team { get; set; }
+        public string UserID { get; set; }
+
+        public string PermKey { get; set; }
 
         public string PermDescription { get; set; }
 
+        public int TeamID { get; set; }
+    }
 
+    public class ProjectPermission
+    {
+        public int ID { get; set; }
+
+        public string UserID { get; set; }
+
+        public string PermKey { get; set; }
+
+        public string PermDescription { get; set; }
+
+        public int ProjectID { get; set; }
     }
 }

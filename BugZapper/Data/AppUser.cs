@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using BugZapper.Models;
 
 namespace BugZapper
 {
@@ -13,5 +15,9 @@ namespace BugZapper
         public string Location { get; set; }
         public string Website { get; set; }
         public string IconName { get; set; }
+
+        public virtual ICollection<ProjectPermission> ProjPerms { get; set; } = new List<ProjectPermission>();
+        public virtual ICollection<TeamPermission> TeamPerms { get; set; } = new List<TeamPermission>();
+
     }
 }

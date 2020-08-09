@@ -8,6 +8,16 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200809015642_AddTeamId.cs" />
     <Compile Remove="Migrations\20200809015642_AddTeamId.Designer.cs" />
+    <Compile Remove="Migrations\20200809195956_AddPermDbSet.cs" />
+    <Compile Remove="Migrations\20200809195956_AddPermDbSet.Designer.cs" />
+    <Compile Remove="Migrations\20200809203123_FixTeamPerm.cs" />
+    <Compile Remove="Migrations\20200809203123_FixTeamPerm.Designer.cs" />
+    <Compile Remove="Migrations\20200809204036_AddPermissions.cs" />
+    <Compile Remove="Migrations\20200809204036_AddPermissions.Designer.cs" />
+    <Compile Remove="Migrations\20200809204123_AddPermissions.cs" />
+    <Compile Remove="Migrations\20200809204123_AddPermissions.Designer.cs" />
+    <Compile Remove="Migrations\20200809204558_AddPermissions.cs" />
+    <Compile Remove="Migrations\20200809204558_AddPermissions.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

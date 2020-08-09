@@ -140,6 +140,35 @@ namespace BugZapper.Migrations
                     b.ToTable("ProjectModel");
                 });
 
+            modelBuilder.Entity("BugZapper.Models.ProjectPermission", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PermDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("ProjectPermission");
+                });
+
             modelBuilder.Entity("BugZapper.Models.TeamModel", b =>
                 {
                     b.Property<int>("ID")
@@ -150,12 +179,44 @@ namespace BugZapper.Migrations
                     b.Property<string>("Owner_ID")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TeamDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TeamName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
                     b.ToTable("TeamModel");
+                });
+
+            modelBuilder.Entity("BugZapper.Models.TeamPermission", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PermDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("TeamPermission");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -296,6 +357,20 @@ namespace BugZapper.Migrations
                         .HasForeignKey("TeamID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BugZapper.Models.ProjectPermission", b =>
+                {
+                    b.HasOne("BugZapper.AppUser", null)
+                        .WithMany("ProjPerms")
+                        .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("BugZapper.Models.TeamPermission", b =>
+                {
+                    b.HasOne("BugZapper.AppUser", null)
+                        .WithMany("TeamPerms")
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

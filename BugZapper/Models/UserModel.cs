@@ -19,6 +19,6 @@ namespace BugZapper.Models
         /// <summary>
         /// The permissions this user has for interacting with their teams and projects
         /// </summary>
-        public List<Permission> Permissions { get; set; }
+        //public List<Permission> Permissions { get; set; }
     }
 }

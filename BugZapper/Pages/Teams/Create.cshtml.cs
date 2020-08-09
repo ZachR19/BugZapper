@@ -1,9 +1,11 @@
-﻿using BugZapper.Data;
+﻿using System.Linq;
+using BugZapper.Data;
 using BugZapper.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BugZapper.Pages.Teams
 {
@@ -35,10 +37,28 @@ namespace BugZapper.Pages.Teams
 
             //Get logged in user
             var user = await _userMan.GetUserAsync(HttpContext.User);
-            if (user != null) 
-                TeamModel.Owner_ID = user.Id;
 
-            _context.TeamModel.Add(TeamModel);
+            if (user == null) 
+                return RedirectToPage("./Index");
+
+            TeamModel.Owner_ID = user.Id;
+            
+            await  _context.TeamModel.AddAsync(TeamModel);
+
+            //Save the team
+            await _context.SaveChangesAsync();
+
+            var perm = new TeamPermission()
+            {
+                TeamID = TeamModel.ID,
+                UserID = user.Id,
+                PermKey = "Admin",
+                PermDescription = "This is the owner of this team"
+            };
+
+            user.TeamPerms.Add(perm);
+
+            //Save the permission
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

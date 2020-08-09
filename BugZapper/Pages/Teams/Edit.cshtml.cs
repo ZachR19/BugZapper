@@ -8,34 +8,43 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BugZapper.Data;
 using BugZapper.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BugZapper.Pages.Teams
 {
     public class EditModel : PageModel
     {
-        private readonly BugZapper.Data.BugZapperContext _context;
+        private readonly BugZapperContext _context;
+        private readonly UserManager<AppUser> _userMan;
 
-        public EditModel(BugZapper.Data.BugZapperContext context)
+        public EditModel(BugZapperContext context, UserManager<AppUser> userman)
         {
             _context = context;
+            _userMan = userman;
         }
 
         [BindProperty]
-        public TeamModel TeamModel { get; set; }
+        public TeamModel Team { get; set; }
+
+        public AppUser User { get; set; }
+
+        public bool AllowEdit { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            TeamModel = await _context.TeamModel.FirstOrDefaultAsync(m => m.ID == id);
+            User = await _userMan.GetUserAsync(HttpContext.User);
 
-            if (TeamModel == null)
-            {
+            if (User == null)
                 return NotFound();
-            }
+
+            Team = await _context.TeamModel.FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Team == null)
+                return NotFound();
+
             return Page();
         }
 
@@ -44,11 +53,9 @@ namespace BugZapper.Pages.Teams
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.Attach(TeamModel).State = EntityState.Modified;
+            _context.Attach(Team).State = EntityState.Modified;
 
             try
             {
@@ -56,14 +63,10 @@ namespace BugZapper.Pages.Teams
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TeamModelExists(TeamModel.ID))
-                {
+                if (!TeamModelExists(Team.ID))
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return RedirectToPage("./Index");
