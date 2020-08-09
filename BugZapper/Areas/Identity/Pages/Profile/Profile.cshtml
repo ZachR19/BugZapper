@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @model BugZapper.Pages.User.ProfileModel
 @{
-    ViewData["Title"] = "UserProfile";
+    ViewData["Title"] = Model.FoundUser.UserName;
 }
 
 @if (Model.ID != null)

@@ -130,7 +130,12 @@ namespace BugZapper.Migrations
                     b.Property<string>("ProjName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TeamID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("TeamID");
 
                     b.ToTable("ProjectModel");
                 });
@@ -141,6 +146,9 @@ namespace BugZapper.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Owner_ID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TeamName")
                         .HasColumnType("nvarchar(max)");
@@ -279,6 +287,15 @@ namespace BugZapper.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("BugZapper.Models.ProjectModel", b =>
+                {
+                    b.HasOne("BugZapper.Models.TeamModel", "Team")
+                        .WithMany("Projects")
+                        .HasForeignKey("TeamID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

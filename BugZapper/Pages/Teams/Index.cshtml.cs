@@ -16,11 +16,11 @@ namespace BugZapper.Pages.Teams
             _context = context;
         }
 
-        public IList<TeamModel> TeamModel { get;set; }
+        public IList<TeamModel> Teams { get;set; }
 
         public async Task OnGetAsync()
         {
-            TeamModel = await _context.TeamModel.ToListAsync();
+            Teams = await _context.TeamModel.ToListAsync();
         }
     }
 }

@@ -8,18 +8,19 @@ namespace BugZapper.Models
 {
     public class TeamModel
     {
-        [NotMapped]
-        public uint AdminId { get; set; }
         public int ID { get; set; }
 
         public string TeamName { get; set; }
 
+        public string Owner_ID { get; set; }
 
         [NotMapped]
-        public List<UserModel> Users { get; set; }
+        public string Description { get; set; }
 
-        [NotMapped]
-        public List<ProjectModel> Projects { get; set; }
+        [NotMapped] 
+        public ICollection<UserModel> Users { get; set; } = new List<UserModel>();
+
+        public ICollection<ProjectModel> Projects { get; set; } = new List<ProjectModel>();
 
     }
 }

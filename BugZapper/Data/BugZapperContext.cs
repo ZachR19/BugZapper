@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BugZapper.Migrations.Configurations;
+using Microsoft.EntityFrameworkCore;
 using BugZapper.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -11,8 +12,15 @@ namespace BugZapper.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            //builder.ApplyConfiguration(new ProjectConfiguration());
+        }
+
         public DbSet<ProjectModel> ProjectModel { get; set; }
 
-        public DbSet<BugZapper.Models.TeamModel> TeamModel { get; set; }
+        public DbSet<TeamModel> TeamModel { get; set; }
     }
 }

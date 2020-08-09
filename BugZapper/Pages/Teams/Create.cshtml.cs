@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BugZapper.Data;
+using BugZapper.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using BugZapper.Data;
-using BugZapper.Models;
+using System.Threading.Tasks;
 
 namespace BugZapper.Pages.Teams
 {
     public class CreateModel : PageModel
     {
-        private readonly BugZapper.Data.BugZapperContext _context;
+        private readonly BugZapperContext _context;
+        private readonly UserManager<AppUser> _userMan;
 
-        public CreateModel(BugZapper.Data.BugZapperContext context)
+        public CreateModel(BugZapperContext context, UserManager<AppUser> userman)
         {
             _context = context;
+            _userMan = userman;
         }
 
         public IActionResult OnGet()
@@ -32,9 +31,12 @@ namespace BugZapper.Pages.Teams
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
+
+            //Get logged in user
+            var user = await _userMan.GetUserAsync(HttpContext.User);
+            if (user != null) 
+                TeamModel.Owner_ID = user.Id;
 
             _context.TeamModel.Add(TeamModel);
             await _context.SaveChangesAsync();

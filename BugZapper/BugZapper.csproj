@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200809015642_AddTeamId.cs" />
+    <Compile Remove="Migrations\20200809015642_AddTeamId.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Core" Version="1.0.2" />
     <PackageReference Include="Azure.Identity" Version="1.1.1" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.0.3" />

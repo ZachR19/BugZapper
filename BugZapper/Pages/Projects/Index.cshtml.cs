@@ -16,11 +16,11 @@ namespace BugZapper.Pages.Projects
             _context = context;
         }
 
-        public IList<ProjectModel> ProjectModel { get;set; }
+        public List<ProjectModel> Projects{ get;set; }
 
         public async Task OnGetAsync()
         {
-            ProjectModel = await _context.ProjectModel.ToListAsync();
+            Projects = await _context.ProjectModel.ToListAsync();
         }
     }
 }

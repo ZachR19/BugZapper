@@ -19,21 +19,20 @@ namespace BugZapper.Pages.Teams
             _context = context;
         }
 
-        public TeamModel TeamModel { get; set; }
+        public TeamModel Team { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            TeamModel = await _context.TeamModel.FirstOrDefaultAsync(m => m.ID == id);
+            Team = await _context.TeamModel
+                            .Include(t => t.Projects)
+                            .FirstOrDefaultAsync(m => m.ID == id);
 
-            if (TeamModel == null)
-            {
+            if (Team == null)
                 return NotFound();
-            }
+
             return Page();
         }
     }

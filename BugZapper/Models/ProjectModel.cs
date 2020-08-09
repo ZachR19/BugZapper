@@ -23,5 +23,9 @@ namespace BugZapper.Models
          
         [DisplayName("Created By")]
         public string CreatedBy { get; set; }
+
+        public int TeamID { get; set; }
+
+        public virtual TeamModel Team { get; set; }
     }
 }
