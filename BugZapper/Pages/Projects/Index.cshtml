@@ -2,21 +2,23 @@
 @model BugZapper.Pages.Projects.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Projects";
 }
 
-<h1>Index</h1>
+<h1>Projects</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
 </p>
 
-@foreach (var item in Model.Projects)
+@foreach (var proj in Model.Projects)
 {
     <div class="card bg-secondary mb-3">
-        <div class="card-header">@item.ProjName</div>
+        <div class="card-header">
+            <a asp-page="./Details" asp-route-id="@proj.ID">@proj.ProjName</a>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">@item.Description</h4>
+            <h4 class="card-title">@proj.Description</h4>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
     </div>
