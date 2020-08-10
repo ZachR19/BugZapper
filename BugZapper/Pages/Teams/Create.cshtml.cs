@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
+using BugZapper.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BugZapper.Pages.Teams
@@ -13,11 +14,12 @@ namespace BugZapper.Pages.Teams
     {
         private readonly BugZapperContext _context;
         private readonly UserManager<AppUser> _userMan;
+        private readonly IUserService _userService;
 
-        public CreateModel(BugZapperContext context, UserManager<AppUser> userman)
+        public CreateModel(BugZapperContext context, IUserService userService)
         {
             _context = context;
-            _userMan = userman;
+            _userService = userService;
         }
 
         public IActionResult OnGet()
@@ -36,7 +38,7 @@ namespace BugZapper.Pages.Teams
                 return Page();
 
             //Get logged in user
-            var user = await _userMan.GetUserAsync(HttpContext.User);
+            var user = await _userService.GetUserByClaims(HttpContext.User);
 
             if (user == null) 
                 return RedirectToPage("./Index");
@@ -56,6 +58,7 @@ namespace BugZapper.Pages.Teams
                 PermDescription = "This is the owner of this team"
             };
 
+            await _userService.SetPermissions(user);
             user.TeamPerms.Add(perm);
 
             //Save the permission
