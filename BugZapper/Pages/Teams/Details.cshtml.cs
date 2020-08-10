@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BugZapper.Data;
+using BugZapper.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using BugZapper.Data;
-using BugZapper.Models;
+using System.Threading.Tasks;
 
 namespace BugZapper.Pages.Teams
 {
     public class DetailsModel : PageModel
     {
-        private readonly BugZapper.Data.BugZapperContext _context;
+        private readonly BugZapperContext _context;
 
-        public DetailsModel(BugZapper.Data.BugZapperContext context)
+        public DetailsModel(BugZapperContext context)
         {
             _context = context;
         }

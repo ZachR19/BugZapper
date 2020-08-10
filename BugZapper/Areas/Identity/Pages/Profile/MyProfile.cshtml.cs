@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using BugZapper.Data;
+using BugZapper.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,7 @@ namespace BugZapper.Pages.User
 {
     public class MyProfileModel : PageModel
     {
-        private UserManager<AppUser> _userMan { get; }
+        private IUserService _userService { get; }
         private BugZapperContext _context { get; }
 
         public readonly IWebHostEnvironment _env;
@@ -21,19 +22,16 @@ namespace BugZapper.Pages.User
         public bool ShowUpdateSuccess { get; set; }
         public bool ShowUpdateFailure { get; set; }
 
-        public MyProfileModel(IWebHostEnvironment env, UserManager<AppUser> userman, BugZapperContext context)
+        public MyProfileModel(IWebHostEnvironment env, IUserService userService, BugZapperContext context)
         {
             _env = env;
-            _userMan = userman;
-            _context = context;
+            _userService = userService;
+            _context = context; 
         }
 
         public async Task OnGet()
         {
-            if (HttpContext.User != null)
-            {
-                LoggedInUser = await _userMan.GetUserAsync(HttpContext.User);
-            }
+            LoggedInUser = await _userService.GetUserByClaims(HttpContext.User);
         }
 
         public async Task OnPost()
@@ -41,7 +39,7 @@ namespace BugZapper.Pages.User
             try
             {
                 //Get logged in user
-                LoggedInUser =  await _userMan.GetUserAsync(HttpContext.User);
+                LoggedInUser =  await _userService.GetUserByClaims(HttpContext.User);
 
                 var user = await _context.Users.Where(u => u.Id == LoggedInUser.Id).FirstOrDefaultAsync();
 

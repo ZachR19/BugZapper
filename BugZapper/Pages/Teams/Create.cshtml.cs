@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using BugZapper.Data;
+﻿using BugZapper.Data;
 using BugZapper.Models;
+using BugZapper.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
-using BugZapper.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace BugZapper.Pages.Teams
 {

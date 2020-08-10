@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BugZapper.Data;
+using BugZapper.Models;
+using BugZapper.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BugZapper.Data;
-using BugZapper.Models;
-using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BugZapper.Pages.Teams
 {
     public class EditModel : PageModel
     {
         private readonly BugZapperContext _context;
-        private readonly UserManager<AppUser> _userMan;
+        private readonly IUserService _userService;
 
-        public EditModel(BugZapperContext context, UserManager<AppUser> userman)
+        public EditModel(BugZapperContext context, IUserService userService)
         {
             _context = context;
-            _userMan = userman;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -35,14 +32,10 @@ namespace BugZapper.Pages.Teams
             if (id == null)
                 return NotFound();
 
-            User = await _userMan.GetUserAsync(HttpContext.User);
-
-            if (User == null)
-                return NotFound();
-
+            User = await _userService.GetUserByClaims(HttpContext.User);
             Team = await _context.TeamModel.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Team == null)
+            if (User == null || Team == null)
                 return NotFound();
 
             return Page();

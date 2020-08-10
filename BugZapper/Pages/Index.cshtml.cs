@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -31,10 +30,7 @@ namespace BugZapper.Pages
             //Display username in index page title
             var claim = HttpContext.User;
 
-            if (claim != null)
-                Username = claim.Identity.Name;
-            else
-                Username = string.Empty;
+            Username = claim != null ? claim.Identity.Name : string.Empty;
         }
 
     }

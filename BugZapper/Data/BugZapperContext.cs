@@ -1,7 +1,6 @@
-﻿using BugZapper.Migrations.Configurations;
-using Microsoft.EntityFrameworkCore;
-using BugZapper.Models;
+﻿using BugZapper.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BugZapper.Data
 {
@@ -10,11 +9,6 @@ namespace BugZapper.Data
         public BugZapperContext (DbContextOptions<BugZapperContext> options)
             : base(options)
         {
-        }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
         }
 
         public DbSet<ProjectModel> ProjectModel { get; set; }

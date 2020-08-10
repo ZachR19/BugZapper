@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BugZapper.Data;
+using BugZapper.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using BugZapper.Data;
-using BugZapper.Models;
+using System.Threading.Tasks;
 
 namespace BugZapper.Pages.Teams
 {
     public class DeleteModel : PageModel
     {
-        private readonly BugZapper.Data.BugZapperContext _context;
+        private readonly BugZapperContext _context;
 
-        public DeleteModel(BugZapper.Data.BugZapperContext context)
+        public DeleteModel(BugZapperContext context)
         {
             _context = context;
         }
@@ -25,25 +22,20 @@ namespace BugZapper.Pages.Teams
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             TeamModel = await _context.TeamModel.FirstOrDefaultAsync(m => m.ID == id);
 
             if (TeamModel == null)
-            {
                 return NotFound();
-            }
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             TeamModel = await _context.TeamModel.FindAsync(id);
 

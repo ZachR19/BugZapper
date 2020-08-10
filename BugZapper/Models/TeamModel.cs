@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BugZapper.Models
 {
@@ -20,7 +17,7 @@ namespace BugZapper.Models
         public string TeamDescription { get; set; }
 
         [NotMapped] 
-        public ICollection<UserModel> Users { get; set; } = new List<UserModel>();
+        public ICollection<AppUser> Users { get; set; } = new List<AppUser>();
 
         public ICollection<ProjectModel> Projects { get; set; } = new List<ProjectModel>();
 

@@ -1,4 +1,5 @@
 using BugZapper.Data;
+using BugZapper.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,10 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using Azure.Core;
-using Azure.Identity;
-using Azure.Security.KeyVault.Secrets;
-using BugZapper.Services;
 
 namespace BugZapper
 {
