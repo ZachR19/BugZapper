@@ -26,7 +26,16 @@ namespace BugZapper
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizePage("/Projects/Create");
+                options.Conventions.AuthorizePage("/Projects/Delete");
+                options.Conventions.AuthorizePage("/Projects/Edit");
+
+                options.Conventions.AuthorizePage("/Teams/Create");
+                options.Conventions.AuthorizePage("/Teams/Delete");
+                options.Conventions.AuthorizePage("/Teams/Edit");
+            });
 
             //Uses cookies to authenticate user and adds user info to HttpContext.User.Identity
             //Also adds various Identity Services (PasswordHasher, UserManagers, etc.)
